@@ -59,7 +59,7 @@ func container() {
 	cmd.Stderr = os.Stderr
 
 	must(syscall.Sethostname([]byte("container_hostname")))
-	must(syscall.Chroot("./resource/" + strconv.FormatInt(util.InetAtoN(containerIp), 10) + "/busybox"))
+	must(syscall.Chroot("./resource/busybox"))
 	must(os.Chdir("/"))
 	must(syscall.Mount("proc", "proc", "proc", 0, ""))
 	must(cmd.Run())
@@ -200,7 +200,6 @@ func releaseNet(netJsonPath string, releaseIp string) {
 func restrictResource(pid int, cgroupName string) {
 	//runCommand("echo", []string{strconv.Itoa(pid), ">>", "/sys/fs/cgroup/cpu/" + cgroupName + "/tasks"}...)
 	runCommand(echoPath, []string{strconv.Itoa(pid), "/sys/fs/cgroup/cpu/" + cgroupName + "/tasks"}...)
-	runCommand(echoPath, []string{strconv.Itoa(pid), "/sys/fs/cgroup/memory/" + cgroupName + "/tasks"}...)
 }
 
 func releaseResouce(cgroupName string) {
